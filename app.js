@@ -16,9 +16,9 @@ const Book = (author,title,pages,read) => {
 myLibrary.push(Book("author 1", "book 1", 300, true));
 myLibrary.push(Book("author 2", "book 2", 500, true));
 function addBookToLibrary(){}
-
-function bookDisplay(arr){
-    const body = document.getElementById('body');
+const body = document.getElementById('body');
+function bookDisplay(arr,body){
+ 
     const bookWrapper = document.createElement('div');
     body.appendChild(bookWrapper);
     for(let i = 0; i< arr.length; i++) {
@@ -52,6 +52,22 @@ function bookDisplay(arr){
         container.appendChild(read);
 
     }
-
 }
-bookDisplay(myLibrary);
+
+function addBookForm(body) {
+    const addBookBtn = document.createElement('button');
+    body.appendChild(addBookBtn);
+    addBookBtnText = document.createTextNode("Add Book");
+    addBookBtn.appendChild(addBookBtnText);
+
+    addBookBtn.addEventListener('click', ()=>{
+        const formWrapper = document.createElement("div");
+        body.appendChild(formWrapper);
+
+        const form = document.createElement('form');
+        
+
+    });
+}
+bookDisplay(myLibrary, body);
+addBookForm(body);
