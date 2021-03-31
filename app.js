@@ -16,11 +16,85 @@ const Book = (author,title,pages,read) => {
 myLibrary.push(Book("author 1", "book 1", 300, true));
 myLibrary.push(Book("author 2", "book 2", 500, true));
 function addBookToLibrary(){}
-const body = document.getElementById('body');
-function bookDisplay(arr,body){
+const mainBody = document.getElementById('mainBody');
+
+
+
+
+function addBookForm(mainBody) {
+    const addBookBtn = document.createElement('button');
+    mainBody.appendChild(addBookBtn);
+    addBookBtnText = document.createTextNode("Add Book");
+    addBookBtn.appendChild(addBookBtnText);
+
+    addBookBtn.addEventListener('click', ()=>{
+        const formWrapper = document.createElement("div");
+        mainBody.appendChild(formWrapper);
+
+        const form = document.createElement('form');
+        formWrapper.appendChild(form);
+
+        const authorInput = document.createElement('input');
+        authorInput.setAttribute('placeholder', "Enter Author name");
+        form.appendChild(authorInput);
+
+        const titleInput = document.createElement('input');
+        titleInput.setAttribute('placeholder', "Enter the Book Title");
+        form.appendChild(titleInput);
+
+        const pagesInput = document.createElement('input');
+        pagesInput.setAttribute('placeholder', "Enter number of pages");
+        form.appendChild(pagesInput);
+
+        const readInput = document.createElement('input');
+        readInput.type = "checkbox";
+        form.appendChild(readInput);
+        const readLabel = document.createElement('label');
+        const readLabelText = document.createTextNode('Read?');
+        readLabel.appendChild(readLabelText);
+        form.appendChild(readLabel);
+
+        const createBookBtn = document.createElement('button');
+        createBookBtnText = document.createTextNode("Add book");
+        createBookBtn.appendChild(createBookBtnText);
+        form.appendChild(createBookBtn);
+        createBookBtn.type = "button";
+
+        createBookBtn.addEventListener('click', createBook);
+        
+
+    });
+}
+
+function clearDom()
+{
+    document.body.innerHTML = "";
+}
+function createBook() {
+    const getAuthor = document.getElementsByTagName('input')[0].value;
+    const getTitle = document.getElementsByTagName('input')[1].value;
+    const getpages = document.getElementsByTagName('input')[2].value;
+    const getRead = () => { 
+        if (document.getElementsByTagName('input')[3].checked){
+            return true;
+        }else {
+            return false;
+        }
+    };
+    const getReadValue = getRead();
+
+    myLibrary.push(Book(getAuthor, getTitle, getpages, getReadValue));
+    clearDom();
+    bookDisplay(myLibrary); 
+    // bookDisplay(myLibrary); 
+    // bookDisplay(myLibrary);
+    // bookDisplay(myLibrary);
+}
+
+function bookDisplay(arr){
  
     const bookWrapper = document.createElement('div');
-    body.appendChild(bookWrapper);
+    mainBody.appendChild(bookWrapper);
     for(let i = 0; i< arr.length; i++) {
         
 
@@ -52,22 +126,8 @@ function bookDisplay(arr,body){
         container.appendChild(read);
 
     }
+    addBookForm(mainBody);
 }
 
-function addBookForm(body) {
-    const addBookBtn = document.createElement('button');
-    body.appendChild(addBookBtn);
-    addBookBtnText = document.createTextNode("Add Book");
-    addBookBtn.appendChild(addBookBtnText);
+bookDisplay(myLibrary);
 
-    addBookBtn.addEventListener('click', ()=>{
-        const formWrapper = document.createElement("div");
-        body.appendChild(formWrapper);
-
-        const form = document.createElement('form');
-        
-
-    });
-}
-bookDisplay(myLibrary, body);
-addBookForm(body);
