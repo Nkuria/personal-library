@@ -9,11 +9,26 @@ let myLibrary = [
 // read: false},
 ];
 
-const Book = (author,title,pages,read) => {
+const Book = (author,title,pages,bkRead) => {
+    // const getAuthor = () => author;
+    // const getTitle = () => title;
+    // const getPages = () => pages;
+    // const getRead = () => read;
+    let read = bkRead;
+    const changeReadStatus =  (element) => {
+        if(read === true) {
+            read = false;
+        }else {
+            read = true;
+            
+        }
+        element.innerHTML = read;
+    }
 
-    return {author,title,pages,read};
+    return {changeReadStatus, author,title,pages,read};
 }
-myLibrary.push(Book("author 1", "book 1", 300, true));
+let book1 = Book("author 1", "book 1", 300, true);
+myLibrary.push(book1);
 myLibrary.push(Book("author 2", "book 2", 500, true));
 function addBookToLibrary(){}
 const mainBody = document.getElementById('mainBody');
@@ -54,6 +69,8 @@ function addBookForm(mainBody) {
         readLabel.appendChild(readLabelText);
         form.appendChild(readLabel);
 
+        
+
         const createBookBtn = document.createElement('button');
         createBookBtnText = document.createTextNode("Add book");
         createBookBtn.appendChild(createBookBtnText);
@@ -71,9 +88,9 @@ function clearDom()
     document.body.innerHTML = "";
 }
 function createBook() {
-    const getAuthor = document.getElementsByTagName('input')[0].value;
-    const getTitle = document.getElementsByTagName('input')[1].value;
-    const getpages = document.getElementsByTagName('input')[2].value;
+    const getAuthorInput = document.getElementsByTagName('input')[0].value;
+    const getTitleInput = document.getElementsByTagName('input')[1].value;
+    const getpagesInput = document.getElementsByTagName('input')[2].value;
     const getRead = () => { 
         if (document.getElementsByTagName('input')[3].checked){
             return true;
@@ -83,13 +100,20 @@ function createBook() {
     };
     const getReadValue = getRead();
 
-    myLibrary.push(Book(getAuthor, getTitle, getpages, getReadValue));
+    myLibrary.push(Book(getAuthorInput, getTitleInput, getpagesInput, getReadValue));
     clearDom();
     bookDisplay(myLibrary); 
     // bookDisplay(myLibrary); 
     // bookDisplay(myLibrary);
     // bookDisplay(myLibrary);
 }
+function removeBook(index, arr) {
+arr.splice(index, 1);
+clearDom();
+bookDisplay(myLibrary);
+}
+
+
 
 function bookDisplay(arr){
  
@@ -102,6 +126,7 @@ function bookDisplay(arr){
         const container = document.createElement('div');
         container.classList.add('container');
         bookWrapper.appendChild(container);
+        container.setAttribute("data-index-number", i)
         
 
 
@@ -124,6 +149,27 @@ function bookDisplay(arr){
         readText = document.createTextNode(arr[i].read);
         read.appendChild(readText);
         container.appendChild(read);
+
+        const changeReadStatusBtn = document.createElement('button');
+        changeReadStatusBtnText = document.createTextNode("Change Read Status");
+        changeReadStatusBtn.appendChild(changeReadStatusBtnText);
+        container.appendChild(changeReadStatusBtn);
+        changeReadStatusBtn.type = "button";
+        changeReadStatusBtn.addEventListener('click', () => {
+            arr[i].changeReadStatus(read);
+            
+        },false)
+
+
+        const removeBookBtn = document.createElement('button');
+        const removeBookText = document.createTextNode("Remove Book");
+        removeBookBtn.appendChild(removeBookText);
+        container.appendChild(removeBookBtn);
+
+        removeBookBtn.addEventListener('click', ()=> {
+            removeBook(i, myLibrary);
+        })
+
 
     }
     addBookForm(mainBody);
